@@ -39,12 +39,25 @@ class Graph:
     def add_node(self):
         new_node = Node()
         self.__nodes.append(new_node)
+        return new_node
 
     def add_connection(self, a, b):
         if a in self.get_nodes() and b in self.get_nodes():
             self.get_connections()[a].add(b)
 
+    def __repr__(self):
+        repr_str = ''
+        for node in self.get_nodes():
+            repr_str += '{} - {}\n'.format(hash(node),
+                                           self.get_connections()[node])
+        return repr_str
 
 if __name__ == '__main__':
 
     g = Graph()
+    a = g.add_node()
+    b = g.add_node()
+    c = g.add_node()
+    g.add_connection(a, b)
+    g.add_connection(a, c)
+    print(g)
