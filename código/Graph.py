@@ -46,8 +46,8 @@ class Graph:
     def get_connections(self):
         return self.__connections
 
-    def add_node(self):
-        new_node = Node()
+    def add_node(self, malicious=0):
+        new_node = Node(malicious=malicious)
         self.__nodes.append(new_node)
         return new_node
 
