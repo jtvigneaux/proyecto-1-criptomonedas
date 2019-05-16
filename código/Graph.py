@@ -1,6 +1,8 @@
 from collections import defaultdict
 from random import randint
 
+from Transaction import Transaction
+
 
 class Node:
     _id = 0
@@ -16,6 +18,9 @@ class Node:
 
     def get_transactions(self):
         return self.__transactions
+
+    def check_transaction(self, transaction):
+        return transaction in self.get_transactions()
 
     def add_transaction(self, transaction):
         self.__transactions.add(transaction)
@@ -52,6 +57,13 @@ class Graph:
                                            self.get_connections()[node])
         return repr_str
 
+    def propagate_message(self, node, transaction):
+        if node.check_transaction(transaction):
+            return
+        node.add_transaction(transaction)
+        for n in self.get_connections()[node]:
+            self.propagate_message(n, transaction)
+
 if __name__ == '__main__':
 
     g = Graph()
@@ -60,4 +72,7 @@ if __name__ == '__main__':
     c = g.add_node()
     g.add_connection(a, b)
     g.add_connection(a, c)
+    g.add_connection(c, a)
+    g.propagate_message(a, Transaction(10))
+    print(a.get_transactions(), b.get_transactions(), c.get_transactions())
     print(g)
