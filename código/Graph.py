@@ -1,5 +1,5 @@
 from collections import defaultdict
-from random import randint
+from random import random, randint
 
 from Transaction import Transaction
 
@@ -75,15 +75,31 @@ class Graph:
         for n in self.get_connections()[node]:
             self.propagate_message(n, transaction, first=False)
 
+
+def GenNetwork(n, p, ppp=0.1):
+    graph = Graph()
+    connections = []
+    for i in range(n):
+        graph.add_node(0 if random() > ppp else randint(1, 3))
+        for j in range(n):
+            if random() < p:
+                connections.append((i, j))
+    for connection in connections:
+        i, j = connection
+        a, b = graph.get_nodes()[i], graph.get_nodes()[j]
+        graph.add_connection(a, b)
+    return graph
+
 if __name__ == '__main__':
 
-    g = Graph()
-    a = g.add_node()
-    b = g.add_node()
-    c = g.add_node()
-    g.add_connection(a, b)
-    g.add_connection(a, c)
-    g.add_connection(c, a)
-    g.propagate_message(a, Transaction(10))
-    print(a.get_transactions(), b.get_transactions(), c.get_transactions())
-    print(g)
+    #g = Graph()
+    #a = g.add_node()
+    #b = g.add_node()
+    #c = g.add_node()
+    #g.add_connection(a, b)
+    #g.add_connection(a, c)
+    #g.add_connection(c, a)
+    #g.propagate_message(a, Transaction(10))
+    #print(a.get_transactions(), b.get_transactions(), c.get_transactions())
+    # print(g)
+    g = GenNetwork(10, 0.4)
