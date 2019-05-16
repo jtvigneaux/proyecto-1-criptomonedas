@@ -8,7 +8,7 @@ class Transaction:
         Transaction.uniqueID += 1
 
     def __str__(self):
-        string = "{{\n\t'type': {},\n\t'value': {},\n\t'uniqueID': {}\n}}\n".format(
+        string = "{{\n\t'type': {},\n\t'value': {},\n\t'uniqueID': {}\n}}".format(
             self.type, self.value, self.uniqueID)
         return string
 

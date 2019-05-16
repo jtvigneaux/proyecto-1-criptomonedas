@@ -19,6 +19,10 @@ class Node:
     def get_transactions(self):
         return self.__transactions
 
+    def print_transactions(self):
+        for transaction in self.get_transactions():
+            print(transaction)
+
     def check_transaction(self, transaction):
         return transaction in self.get_transactions()
 
