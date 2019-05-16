@@ -7,14 +7,19 @@ from Transaction import Transaction
 class Node:
     _id = 0
 
-    def __init__(self, malicius=False, transactions=set()):
+    def __init__(self, malicious=0, transactions=set()):
         self.id = Node._id
         Node._id += 1
         self.__transactions = transactions
-        self.__malicius = malicius
+        self.__malicious = malicious
 
-    def is_malicius(self):
-        return self.malicius
+    def is_malicious(self):
+        return bool(self.__malicious)
+
+    def malicious_strategy(self):
+        if self.__malicious == 3:
+            return randint(1, 2)
+        return self.__malicious
 
     def get_transactions(self):
         return self.__transactions
@@ -57,12 +62,14 @@ class Graph:
                                            self.get_connections()[node])
         return repr_str
 
-    def propagate_message(self, node, transaction):
-        if node.check_transaction(transaction):
+    def propagate_message(self, node, transaction, first=True):
+        if node.check_transaction(transaction) or \
+                node.malicious_strategy() == 1 or \
+                (self.malicious_strategy() == 2 and not first):
             return
         node.add_transaction(transaction)
         for n in self.get_connections()[node]:
-            self.propagate_message(n, transaction)
+            self.propagate_message(n, transaction, first=False)
 
 if __name__ == '__main__':
 
