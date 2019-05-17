@@ -40,8 +40,8 @@ class Node:
 
 class Graph:
 
-    def __init__(self, nodes=[]):
-        self.__nodes = nodes
+    def __init__(self):
+        self.__nodes = []
         self.__connections = defaultdict(set)
 
     def get_nodes(self):
@@ -71,7 +71,7 @@ class Graph:
                 node.malicious_strategy() == 1 or \
                 (node.malicious_strategy() == 2 and not first):
             return
-        print("Nodo {} agrega mensaje {}".format(node.id, transaction.uniqueID))
+        # print("Nodo {} agrega mensaje {}".format(node.id, transaction.uniqueID))
         node.add_transaction(transaction)
         for n in self.__connections[node]:
             self.propagate_message(n, transaction, first=False)
