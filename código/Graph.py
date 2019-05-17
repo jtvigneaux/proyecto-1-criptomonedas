@@ -3,6 +3,9 @@ from random import random, randint
 
 from Transaction import Transaction
 
+import networkx as nx
+import matplotlib.pyplot as plt
+
 
 class Node:
     _id = 0
@@ -44,6 +47,10 @@ class Graph:
         self.__nodes = []
         self.__connections = defaultdict(set)
 
+        # Para mostrar el grafo
+        self.display = nx.DiGraph()
+        self.node_colors = {}
+
     def get_nodes(self):
         return self.__nodes
 
@@ -51,13 +58,18 @@ class Graph:
         return self.__connections
 
     def add_node(self, malicious=0):
+        color = {0: 'grey'}
         new_node = Node(malicious=malicious)
         self.__nodes.append(new_node)
+        # Grafico
+        self.display.add_node(hash(new_node) + 1)
+        self.node_colors[hash(new_node) + 1] = color.get(malicious, 'red')
         return new_node
 
     def add_connection(self, a, b):
         if a in self.get_nodes() and b in self.get_nodes():
             self.get_connections()[a].add(b)
+            self.display.add_edge(hash(a) + 1, hash(b) + 1)
 
     def __repr__(self):
         repr_str = ''
@@ -71,10 +83,22 @@ class Graph:
                 node.malicious_strategy() == 1 or \
                 (node.malicious_strategy() == 2 and not first):
             return
-        # print("Nodo {} agrega mensaje {}".format(node.id, transaction.uniqueID))
         node.add_transaction(transaction)
         for n in self.__connections[node]:
             self.propagate_message(n, transaction, first=False)
+
+    def show_graph(self):
+        black_edges = [edge for edge in self.display.edges()]
+
+        # Need to create a layout when doing
+        # separate calls to draw nodes and edges
+        pos = nx.spring_layout(self.display)
+        nx.draw_networkx_nodes(
+            self.display, pos, cmap=plt.get_cmap('jet'), node_color=list(self.node_colors.values()), node_size=500)
+        nx.draw_networkx_labels(self.display, pos)
+        nx.draw_networkx_edges(
+            self.display, pos, edgelist=black_edges, arrows=True)
+        plt.show()
 
 
 def GenNetwork(n, p, ppp=0.1):
@@ -103,4 +127,5 @@ if __name__ == '__main__':
     #g.propagate_message(a, Transaction(10))
     #print(a.get_transactions(), b.get_transactions(), c.get_transactions())
     # print(g)
-    g = GenNetwork(10, 0.4)
+    g = GenNetwork(10, 0.16)
+    g.show_graph()
