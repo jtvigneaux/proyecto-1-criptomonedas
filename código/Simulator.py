@@ -21,7 +21,9 @@ class Simulator:
 		for transaction in transactions:
 			for node in self.graph.get_nodes():
 				if random.random() < self.prob_receive_message:
+					print("Nodo {} recibe mensaje {} para propagar".format(node.id, transaction.uniqueID))
 					self.graph.propagate_message(node, transaction)	
+			
 			
 		
 		for node in self.graph.get_nodes():
@@ -36,9 +38,15 @@ if __name__ == "__main__":
 	n1 = graph.add_node()
 	n2 = graph.add_node()
 	n3 = graph.add_node()
-	n4 = graph.add_node()
+	n4 = graph.add_node(1)
 	n5 = graph.add_node()
 	n6 = graph.add_node()
+	graph.add_connection(n1, n2)
+	graph.add_connection(n2, n3)
+	graph.add_connection(n3, n4)
+	graph.add_connection(n4, n5)
+	graph.add_connection(n5, n6)
+	graph.add_connection(n6, n1)
 	simulator = Simulator(graph, 0.4, 0.5, 0.1, 1)
 
 	simulator.run()

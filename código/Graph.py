@@ -7,10 +7,10 @@ from Transaction import Transaction
 class Node:
     _id = 0
 
-    def __init__(self, malicious=0, transactions=set()):
+    def __init__(self, malicious=0):
         self.id = Node._id
         Node._id += 1
-        self.__transactions = transactions
+        self.__transactions = set()
         self.__malicious = malicious
 
     def is_malicious(self):
@@ -69,10 +69,11 @@ class Graph:
     def propagate_message(self, node, transaction, first=True):
         if node.check_transaction(transaction) or \
                 node.malicious_strategy() == 1 or \
-                (self.malicious_strategy() == 2 and not first):
+                (node.malicious_strategy() == 2 and not first):
             return
+        print("Nodo {} agrega mensaje {}".format(node.id, transaction.uniqueID))
         node.add_transaction(transaction)
-        for n in self.get_connections()[node]:
+        for n in self.__connections[node]:
             self.propagate_message(n, transaction, first=False)
 
 
