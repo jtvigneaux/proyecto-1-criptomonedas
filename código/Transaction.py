@@ -1,8 +1,8 @@
 class Transaction:
     uniqueID = 0
 
-    def __init__(self, value, type="transaction"):
-        self.type = type
+    def __init__(self, value):
+        self.type = "transaction"
         self.value = value
         self.uniqueID = Transaction.uniqueID
         Transaction.uniqueID += 1

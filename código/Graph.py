@@ -57,6 +57,9 @@ class Graph:
     def get_connections(self):
         return self.__connections
 
+    def get_amount_of_nodes(self):
+        return len(self.__nodes)
+
     def add_node(self, malicious=0):
         color = {0: 'grey'}
         new_node = Node(malicious=malicious)
