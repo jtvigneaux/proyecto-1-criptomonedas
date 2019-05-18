@@ -31,7 +31,7 @@ class Simulator:
 			else:
 				index = sets_of_transactions.index(node.get_transactions())
 				number_of_nodes[index] += 1
-		consensus = max(number_of_nodes)
+		consensus = max(number_of_nodes)  # Elijo el maximo de los conjuntos en consenso
 		self.consensus.append(consensus)
 		return consensus
 
@@ -68,8 +68,8 @@ class Simulator:
 			nodos_en_consenso = self.nodes_in_consensus()
 			if self.show_info:	
 				print("RONDA {} | Máximo número de nodos en consenso: {}".format(round + 1, nodos_en_consenso))
-		
-		# self.show_consensus()
+		if self.show_info:
+			self.show_consensus()
 		# print(self.statistics())
 
 
@@ -83,6 +83,50 @@ def multiple_runs(iterations, number_of_nodes, p, pp, ppp, k):
 		medias.append(media)
 	print("Iteraciones: {} | Media de nodos en consenso: {} | SD: {}".format(iterations, 
 		np.mean(medias), np.std(medias)))
+	return np.mean(medias)
+
+
+def evolution_changing_parameter(iterations, number_of_nodes, p, pp, ppp, k, parameter):
+	medias = []
+	x = [i for i in np.arange(0, 1 + 0.1, 0.1)]  # rates
+	if parameter == "connectivity_rate":
+		xlabel = "Probabilidad de conectividad entre nodos"
+		for p in x:
+			media = multiple_runs(iterations, number_of_nodes, p, pp, ppp, k)
+			medias.append(media)
+	elif parameter == "malicious_rate":
+		xlabel = "Porcentaje de nodos maliciosos"
+		for ppp in x:
+			media = multiple_runs(iterations, number_of_nodes, p, pp, ppp, k)
+			medias.append(media)
+	elif parameter == "prob_recibir_mensaje":
+		xlabel = "Probabilidad de que un nodo reciba un mensaje para propagar"
+		for pp in x:
+			media = multiple_runs(iterations, number_of_nodes, p, pp, ppp, k)
+			medias.append(media)
+	elif parameter == "numero_rondas":
+		xlabel = "Numero de rondas de propagación de mensajes"
+		x = [i for i in np.arange(1, 20 + 1, 1)]
+		for k in x:
+			media = multiple_runs(iterations, number_of_nodes, p, pp, ppp, k)
+			medias.append(media)
+	elif parameter == "numero_nodos":
+		xlabel = "Numero de nodos en red"
+		x = [i for i in np.arange(1, 40 + 1, 2)]
+		for number_of_nodes in x:
+			media = multiple_runs(iterations, number_of_nodes, p, pp, ppp, k) / number_of_nodes
+			medias.append(media)
+
+	plt.plot(x, medias)
+	plt.yticks(np.arange(0, max(medias) + 1, 1))
+	plt.xlabel(xlabel)
+	plt.ylabel('Número máximo de nodos en consenso')
+	if parameter == "numero_nodos":
+		plt.yticks(np.arange(0, max(medias) + 0.2, 0.1))
+		plt.ylabel('Porcentaje de nodos en consenso')
+	plt.title('Evolución de consenso según {}'.format(parameter))
+	plt.show()
+		
 
 
 if __name__ == "__main__":
@@ -99,9 +143,12 @@ if __name__ == "__main__":
 	graph.add_connection(n4, n5)
 	graph.add_connection(n5, n6)
 	graph.add_connection(n6, n1)
-	#simulator = Simulator(graph, 0.4, 0.5, 0.1, 10)
+	escenario_0 = (graph, 0.4, 0.5, 0.1, 10, True)
+	#simulator = Simulator(*escenario_0)
+	#simulator.run()
 	random_graph = GenNetwork(6, 0.6, 0.1)
 	simulator = Simulator(random_graph, 0.4, 0.5, 0.1, 10, True)
 	simulator.run()
-	# multiple_runs(100, 6, 0.6, 0.5, 0.1, 10)
+	# multiple_runs(50, 10, 0.6, 0.5, 0.1, 10)
+	# evolution_changing_parameter(50, 10, 0.6, 0.5, 0.1, 10, "connectivity_rate")
 	
