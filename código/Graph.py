@@ -91,8 +91,6 @@ class Graph:
             self.propagate_message(n, transaction, first=False)
 
     def show_graph(self):
-        black_edges = [edge for edge in self.display.edges()]
-
         # Need to create a layout when doing
         # separate calls to draw nodes and edges
         pos = nx.spring_layout(self.display)
@@ -100,7 +98,7 @@ class Graph:
             self.display, pos, cmap=plt.get_cmap('jet'), node_color=list(self.node_colors.values()), node_size=500)
         nx.draw_networkx_labels(self.display, pos)
         nx.draw_networkx_edges(
-            self.display, pos, edgelist=black_edges, arrows=True)
+            self.display, pos, edgelist=self.display.edges(), arrows=True)
         plt.show()
 
 
