@@ -50,6 +50,7 @@ class Graph:
         # Para mostrar el grafo
         self.display = nx.DiGraph()
         self.node_colors = {}
+        self.malicious_nodes = 0
 
     def get_nodes(self):
         return self.__nodes
@@ -61,6 +62,8 @@ class Graph:
         return len(self.__nodes)
 
     def add_node(self, malicious=0):
+        if malicious != 0:
+            self.malicious_nodes += 1
         color = {0: 'grey'}
         new_node = Node(malicious=malicious)
         self.__nodes.append(new_node)
