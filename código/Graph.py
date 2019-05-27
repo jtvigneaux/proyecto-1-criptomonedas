@@ -131,5 +131,5 @@ if __name__ == '__main__':
     #g.propagate_message(a, Transaction(10))
     #print(a.get_transactions(), b.get_transactions(), c.get_transactions())
     # print(g)
-    g = GenNetwork(10, 0.16)
+    g = GenNetwork(10, 0.60)
     g.show_graph()

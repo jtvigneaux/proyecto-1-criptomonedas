@@ -20,4 +20,4 @@ if __name__ == "__main__":
     t = Transaction(50)
     t2 = Transaction(52)
     t3 = Transaction(54)
-    print(t, t2, t3)
+    print(t)

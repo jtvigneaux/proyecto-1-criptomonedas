@@ -135,7 +135,7 @@ def simple_graph():
 	n3 = graph.add_node()
 	n4 = graph.add_node()
 	n5 = graph.add_node()
-	n6 = graph.add_node(1)  # Nodo malicioso
+	n6 = graph.add_node()  # Nodo malicioso
 	graph.add_connection(n1, n2)
 	graph.add_connection(n2, n3)
 	graph.add_connection(n3, n4)
@@ -148,30 +148,30 @@ def simple_graph():
 
 if __name__ == "__main__":
 
-	#graph0 = simple_graph()
-	#graph0.show_graph()
-	#escenario_0 = (graph0, 0.4, 0.5, 0.1, 10, True)
+	graph0 = simple_graph()
+	graph0.show_graph()
+	escenario = (graph0, 0.4, 0.5, 0.1, 10, True)
 
 	#random_graph_1 = GenNetwork(10, 0.6, 0.1)  # Number of nodes, conectividad, maliciosos
 	#random_graph_1.show_graph()
-	#escenario_1 = (random_graph_1, 0.6, 0.5, 0.1, 10, True)
+	#escenario = (random_graph_1, 0.6, 0.5, 0.1, 10, True)
 
 	#random_graph_2 = GenNetwork(10, 0.2, 0.1)  # Number of nodes, conectividad, maliciosos
 	#random_graph_2.show_graph()
-	#escenario_2 = (random_graph_2, 0.2, 0.5, 0.1, 10, True)
+	#escenario = (random_graph_2, 0.2, 0.5, 0.1, 10, True)
 
 	#random_graph_3 = GenNetwork(10, 0.6, 0.5)  # Number of nodes, conectividad, maliciosos
 	#random_graph_3.show_graph()
-	#escenario_3 = (random_graph_3, 0.6, 0.5, 0.5, 10, True)
+	#escenario = (random_graph_3, 0.6, 0.5, 0.5, 10, True)
 
 	#random_graph_4 = GenNetwork(50, 0.2, 0.4)  # Number of nodes, conectividad, maliciosos
 	#random_graph_4.show_graph()
-	#escenario_4 = (random_graph_4, 0.2, 0.5, 0.4, 10, True)
+	#escenario = (random_graph_4, 0.2, 0.5, 0.4, 10, True)
 	#print("Nodos maliciosos: ", random_graph_4.malicious_nodes)
 
 
-	#simulator = Simulator(*escenario_0)
-	#simulator.run()
+	simulator = Simulator(*escenario)
+	simulator.run()
 
 	#simulator = Simulator(random_graph, 0.4, 0.5, 0.1, 10, True)
 	#simulator.run()
@@ -179,5 +179,5 @@ if __name__ == "__main__":
 
 
 	# multiple_runs(50, 10, 0.6, 0.5, 0.1, 10)
-	evolution_changing_parameter(50, 10, 0.1, 0.5, 0.1, 10, "numero_nodos")
+	# evolution_changing_parameter(50, 10, 0.1, 0.5, 0.1, 10, "numero_nodos")
 	
